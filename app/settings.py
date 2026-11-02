@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -126,3 +127,8 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+
+# I definations file real in computer menu which those open filers they are kept
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# I definations scription public which files open (uploads) are acess in browser.
+MEDIA_URL = "/media/"

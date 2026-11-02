@@ -1,22 +1,22 @@
-"""
-URL configuration for app project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
+# Import mod admin, panel adm.
 from django.contrib import admin
+
+# Import function path, use for link urls in page
 from django.urls import path
 
+# Import settings for read config my settings.py (MEDIA_URL and MEDIA_ROT)
+from django.conf import settings
+
+# Import function static, server filers ( send image p/ users)
+from django.conf.urls.static import static
+
+# Import cars_view file cars/views.py
+from cars.views import cars_view
+
+# I create list urlpatterns, Django search which scription ledads where
 urlpatterns = [
-    path('admin/', admin.site.urls),
-]
+    # I speak scription "admin/" open panel admin for django.
+    path("admin/", admin.site.urls),
+    path("cars/", cars_view),
+    # MEDIA_URL is scription public (ex: /media/) and MEDIA_ROOT is file real in computer menu.
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
