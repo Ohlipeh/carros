@@ -17,6 +17,6 @@ from cars.views import cars_view
 urlpatterns = [
     # I speak scription "admin/" open panel admin for django.
     path("admin/", admin.site.urls),
-    path("cars/", cars_view),
+    path("cars/", cars_view, name="cars_list"),
     # MEDIA_URL is scription public (ex: /media/) and MEDIA_ROOT is file real in computer menu.
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

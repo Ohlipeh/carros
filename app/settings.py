@@ -56,7 +56,8 @@ ROOT_URLCONF = "app.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        # BASE_DIR is the file up "app" (where is the manage.py), I together "app" and "templates" with the "/"
+        "DIRS": ["app/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
