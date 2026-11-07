@@ -11,12 +11,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 # Import cars_view file cars/views.py
-from cars.views import cars_view
+from cars.views import cars_view, new_car_view
 
 # I create list urlpatterns, Django search which scription ledads where
 urlpatterns = [
     # I speak scription "admin/" open panel admin for django.
     path("admin/", admin.site.urls),
     path("cars/", cars_view, name="cars_list"),
+    # i link the address "new_cr/" of view new_car_view; the name="new_car" is the nickname use for call this route in templates.
+    path("new_car/", new_car_view, name="new_car"),
     # MEDIA_URL is scription public (ex: /media/) and MEDIA_ROOT is file real in computer menu.
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
