@@ -11,7 +11,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 # Import register_view file accounts/views.py
-from accounts.views import register_view
+from accounts.views import login_view, logout_view, register_view
 
 # Import cars_view file cars/views.py
 from cars.views import cars_view, new_car_view
@@ -25,5 +25,7 @@ urlpatterns = [
     path("new_car/", new_car_view, name="new_car"),
     # I link the address "register/" the view register_view: the name="register" is of nick the use for call this route in templates.
     path("register/", register_view, name="register"),
+    path("login/", login_view, name="login"),
+    path("logout/", logout_view, name="logout"),
     # MEDIA_URL is scription public (ex: /media/) and MEDIA_ROOT is file real in computer menu.
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
