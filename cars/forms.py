@@ -27,7 +27,7 @@ class CarModelForm(forms.ModelForm):
 
     def clean_factory_year(self):
         factory_year = self.cleaned_data.get("factory_year")
-        if factory_year < 1975:
+        if factory_year < 1970:
             self.add_error(
                 "factory_year",
                 "It is not possible to register cars manufactured before 1975.",

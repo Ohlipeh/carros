@@ -1,39 +1,43 @@
-# I import function render, that takes a file HTML (template) and the transforme in a page browser.
-from django.shortcuts import redirect, render
+# I import two views generic ready: ListView (shows a list the obj) and CreateView (show the process a form the create)
+from django.views.generic import CreateView, ListView
 
 # I import cars models in Car, The view need use model.
 from cars.models import Car
+
+# I import the form CarModelForm, what created from model Car
 from cars.forms import CarModelForm
 
 
-# I write here the my views, that are fuctions that decides what appears when someone acesses an address.
-# I create the fuction cars_view; the parameter request saved everything regarding the request made by the browser
-def cars_view(request):
-    # In my objects Car i want all. (SQL 'Querys'). order_by sort in "ABC" order.
-    cars = Car.objects.all().order_by("model")
-    # before verification if user performed a search.
-    search = request.GET.get("search")
-    if search:
-        cars = Car.objects.filter(model__icontains=search)
-    # I'll return it as the response the page cars.html, used the render it request to set everything up just right.
-    return render(request, "cars.html", {"cars": cars})
+# I create class CarsListView: Inherit  the ListView make django fetch it obj and put together the list on my own
+class CarListView(ListView):
+    # I specify which model the list will display
+    model = Car
+    # I specify which HTML template will be used to display the list
+    template_name = "cars.html"
+    # I specify the name of the variable that the HTML will receive (the {% for car in cars %} uses this name)
+    context_object_name = "cars"
+
+    # I overrode get_queryset, which is the method that decides WHICH cars are included in the list
+    def get_queryset(self):
+        # I call the original get_queryset (which returns all cars) using super() and sort by model (A to Z)
+        cars = super().get_queryset().order_by("model")
+        # I retrieve the search text from the URL; within the class, the request is stored in self.request
+        search = self.request.GET.get("search")
+        # I verific if exists some text the search
+        if search:
+            # I filter the list is which already order, ignored MAX and MIN
+            cars = cars.filter(model_icontains=search)
+        # I return the list end the cras
+        return cars
 
 
-# I create view new_car_view, which shows the registration page for a new car.
-def new_car_view(request):
-    # I verefications if order is a send the forms (POST).
-    if request.method == "POST":
-        # I create the form already filled: request.POST contains text and numbers, while request.FILES contains files (the photo).
-        new_car_form = CarModelForm(request.POST, request.FILES)
-        # I verifications are if all the camps valid (mandatory camps   filled, correct numbers, image valid).
-        if new_car_form.is_valid():
-            # I call the save() of created in CarForm for record the car in bank.
-            new_car_form.save()
-            # I direct for the list of cars, used the nick the route cars_list.
-            return redirect("cars_list")
-    # I used the else for where the order is GET (the person just open page).
-    else:
-        # I create a form CarModelForm empty, ready to be filled out.
-        new_car_form = CarModelForm()
-    # I return page new_car.html and send the form whithin at in dict.
-    return render(request, "new_car.html", {"new_car_form": new_car_form})
+# I create the class NewCreateView: Inherit the CreateView aready the django to take car alone
+class NewCarCreateView(CreateView):
+    # I specify which model is to go create.
+    model = Car
+    # I specify which form used
+    form_class = CarModelForm
+    # I specify which HTML template will be form
+    template_name = "new_car.html"
+    # I specify for from the person will be after save with sucess
+    success_url = "/cars/"
